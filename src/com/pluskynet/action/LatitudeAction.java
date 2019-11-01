@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 import com.pluskynet.batch.BatchConstant;
 import com.pluskynet.batch.SectionBatchPenal;
 import com.pluskynet.batch.ViewhisBatch;
+import com.pluskynet.batch.thread.RuleStateThread;
 import com.pluskynet.domain.Latitude;
 import com.pluskynet.domain.StatsDoc;
 import com.pluskynet.domain.User;
@@ -23,6 +24,7 @@ import com.pluskynet.otherdomain.Treelatitude;
 import com.pluskynet.service.LatitudeService;
 import com.pluskynet.util.BaseAction;
 import com.pluskynet.util.JSONUtil;
+import com.pluskynet.util.ThreadPoolSingleton;
 
 import javassist.expr.NewArray;
 import net.sf.json.JSONArray;
@@ -228,6 +230,8 @@ public class LatitudeAction extends BaseAction {
 			return;
 		} else {
 			String msg = latitudeService.update(latitude, user);
+			ThreadPoolSingleton getinstance = ThreadPoolSingleton.getinstance();
+			getinstance.executeThread(new RuleStateThread(latitude));
 			outJsonByMsg(msg);
 		}
 	}
@@ -242,7 +246,7 @@ public class LatitudeAction extends BaseAction {
 			return;
 		}
 		//1 刑事 9民事
-		List<Map> list = latitudeService.getLatitudeList(user,9);
+		List<Map> list = latitudeService.getLatitudeList(user,0);
 		outJsonByMsg(list, "成功");
 	}
 
