@@ -18,6 +18,7 @@ import com.pluskynet.batch.SectionBatchPenal;
 import com.pluskynet.batch.SectionBatchPenal5364;
 import com.pluskynet.batch.SupplyLevel;
 import com.pluskynet.batch.ViewhisBatch;
+import com.pluskynet.batch.thread.RuleStateThread;
 import com.pluskynet.data.KeywordAppellor;
 import com.pluskynet.data.thread.SectionBatchThread;
 import com.pluskynet.domain.Cause;
@@ -32,6 +33,8 @@ import com.pluskynet.service.DocRuleService;
 import com.pluskynet.service.PreviewService;
 import com.pluskynet.test.Bigdatatest;
 import com.pluskynet.util.BaseAction;
+import com.pluskynet.util.ThreadPoolSingleton;
+
 import javassist.expr.NewArray;
 import net.sf.json.JSONObject;
 
@@ -225,6 +228,8 @@ public class DocRuleAction extends BaseAction {
 				docrule.setSectionname(sectionName);
 			}
 			msg = docRuleService.update(docrule);
+			ThreadPoolSingleton getinstance = ThreadPoolSingleton.getinstance();
+			getinstance.executeThread(new RuleStateThread(docrule));
 			LOGGER.info("修改名称或规则成功"+user.getUsername());
 		}
 		outJsonByMsg(msg);
