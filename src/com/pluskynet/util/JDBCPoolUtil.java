@@ -42,7 +42,7 @@ public class JDBCPoolUtil {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			C3P0connsPollUTIL.close(conn, stmt, null);
+			C3P0connsPollUTIL.close(null, stmt, null);
 		}
 	}
 
@@ -72,7 +72,7 @@ public class JDBCPoolUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			C3P0connsPollUTIL.close(conn, stmt, rs);
+			C3P0connsPollUTIL.close(null, stmt, rs);
 		}
 		return list;
 	}
@@ -103,28 +103,29 @@ public class JDBCPoolUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			C3P0connsPollUTIL.close(conn, stmt, rs);
+			C3P0connsPollUTIL.close(null, stmt, rs);
 		}
 		return list;
 	}
 	
 	
-	public static void main(String[] args) {
-		List< Object> list = new ArrayList<Object>();
-		for (int i = 0; i < 10; i++) {
-			Map<String, Object> treeMap = new HashMap<String, Object>();
-			treeMap.put("latitudeid", i);
-			treeMap.put("latitudefid", i);
-			treeMap.put("latitudename", "收到丰富的");
-			treeMap.put("children",new Viewhis());
-			list.add(treeMap);
-		}
-		String jsonString = JSONUtil.toJSONString(list);
-		JedisUtils.set("test_listStr", jsonString, 0);
-		String string = JedisUtils.get("test_listStr");
-		JSONArray parseArray = JSONArray.parseArray(string);
-		for (Object object : parseArray) {
-			System.out.println(object.toString());
-		}
-	}
+//	public static void main(String[] args) {
+//		List< Object> list = new ArrayList<Object>();
+//		for (int i = 0; i < 10; i++) {
+//			Map<String, Object> treeMap = new HashMap<String, Object>();
+//			treeMap.put("latitudeid", i);
+//			treeMap.put("latitudefid", i);
+//			treeMap.put("latitudename", "收到丰富的");
+//			treeMap.put("children",new Viewhis());
+//			list.add(treeMap);
+//		}
+//		String jsonString = JSONUtil.toJSONString(list);
+//		JedisUtils.set("test_listStr", jsonString, 0);
+//		String string = JedisUtils.get("test_listStr");
+//		JSONArray parseArray = JSONArray.parseArray(string);
+//		for (Object object : parseArray) {
+//			System.out.println(object.toString());
+//		}
+//	}
+	
 }
