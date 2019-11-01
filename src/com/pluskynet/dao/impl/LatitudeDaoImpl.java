@@ -26,34 +26,38 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 @SuppressWarnings("all")
+@Transactional
 public class LatitudeDaoImpl extends HibernateDaoSupport implements LatitudeDao {
 	private Logger LOGGER = Logger.getLogger(LatitudeDaoImpl.class);
 	@Override
 	public Map save(Latitude latitude, User user,int type) {
 		Map map = new HashMap();
 		String hql = "from Latitude where latitudename = ? and latitudefid = ?";
-		List<Latitude> list = this.getHibernateTemplate().find(hql, latitude.getLatitudename(),latitude.getLatitudefid());
-		if (list.size() > 0) {
-			map.put("msg", "已存在");
-			return map;
-		} else {
-			if (user.getRolecode()!=null && !user.getRolecode().equals("null")) {
-				latitude.setStats("ok");
+		try {
+			List<Latitude> list = this.getHibernateTemplate().find(hql, latitude.getLatitudename(),latitude.getLatitudefid());
+			if (list != null && list.size() > 0) {
+				map.put("msg", "已存在");
+				return map;
 			} else {
-				latitude.setStats("create");
+				if (user.getRolecode()!=null && !user.getRolecode().equals("null")) {
+					latitude.setStats("ok");
+				} else {
+					latitude.setStats("create");
+				}
+				latitude.setType(type);
+				latitude.setCreateruser(user.getUsername());
+				latitude.setCreatorName(user.getName());
+				this.getHibernateTemplate().save(latitude);
 			}
-			latitude.setType(type);
-			latitude.setCreateruser(user.getUsername());
-			latitude.setCreatorName(user.getName());
-			this.getHibernateTemplate().save(latitude);
+			list = this.getHibernateTemplate().find(hql, latitude.getLatitudename(),latitude.getLatitudefid());
+			map.put("latitudeid", list.get(0).getLatitudeid());
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		list = this.getHibernateTemplate().find(hql, latitude.getLatitudename(),latitude.getLatitudefid());
-		map.put("latitudeid", list.get(0).getLatitudeid());
 		return map;
 	}
 
 	@Override
-	@Transactional
 	public String update(Latitude latitude, User user) {
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String hql = null;
@@ -299,7 +303,7 @@ public class LatitudeDaoImpl extends HibernateDaoSupport implements LatitudeDao 
 	public List<Latitude> getLatitudeList(int type) {
 //		String sql =  "select * from latitude where type = 99 and latitudefid != 0 union select *  from latitude where type = "+type+" and latitudefid != 0 ";//其他维度规则表
 //		String sql =  "from Latitude where type = 99 and latitudefid != 0 union from Latitude where type = "+type+" and latitudefid != 0 ";//其他维度规则表
-		String sql = "from Latitude where type in(99,"+type+")";//其他维度规则表
+		String sql = "from Latitude where type = "+type+")";//其他维度规则表
 		List<Latitude> list = this.getHibernateTemplate().find(sql);
 		return list;
 	}
