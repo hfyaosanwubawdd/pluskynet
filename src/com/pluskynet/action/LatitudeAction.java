@@ -259,7 +259,6 @@ public class LatitudeAction extends BaseAction {
 			outJsonByMsg("未登录");
 			return;
 		}
-		
 		if (BatchConstant.LALIST_PENAL.isEmpty() ) {
 			LOGGER.info("缓存为空  从mysql获取维度菜单列表");
 			List<Map> list = latitudeService.getLatitudeList(user,1);
