@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.sql.DataSource;
+
+import org.apache.log4j.Logger;
+
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.pluskynet.batch.BatchConstant;
 
@@ -15,6 +18,7 @@ import com.pluskynet.batch.BatchConstant;
  */
 public class C3P0connsPollUTIL {
 
+	private static Logger LOGGER = Logger.getLogger(C3P0connsPollUTIL.class);
 	private static ComboPooledDataSource ds = new ComboPooledDataSource();
 	static {
 		try {
@@ -35,6 +39,7 @@ public class C3P0connsPollUTIL {
 	}
 
 	public static Connection getConnection() throws SQLException {
+		LOGGER.info("threadPoolSize { "+ds.getThreadPoolSize()+" }");
 		return ds.getConnection();
 	}
 
