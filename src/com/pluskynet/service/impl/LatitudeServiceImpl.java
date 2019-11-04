@@ -227,10 +227,12 @@ public class LatitudeServiceImpl implements LatitudeService {
 					Thread.sleep(1000);
 					int state = 0;
 					while (state < 100) {
-						state = Math.round((listsDocs.size()/size)*100);
-						String updateSQL = "update t_view_his set state = '"+state+"%' where batchno = '"+batchno+"'";
-						logger.info(updateSQL);
-						JDBCPoolUtil.executeSql(updateSQL);
+						if (size != 0) {
+							state = Math.round((listsDocs.size()/size)*100);
+							String updateSQL = "update t_view_his set state = '"+state+"%' where batchno = '"+batchno+"'";
+							logger.info(updateSQL);
+							JDBCPoolUtil.executeSql(updateSQL);
+						}
 					}
 				} catch (InterruptedException e) {
 					e.printStackTrace();
