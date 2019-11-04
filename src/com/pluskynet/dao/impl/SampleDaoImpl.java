@@ -13,6 +13,10 @@ import org.jsoup.helper.StringUtil;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.pluskynet.batch.BatchConstant;
 import com.pluskynet.batch.SampleBatch;
 import com.pluskynet.dao.SampleDao;
 import com.pluskynet.dao.SynonymDao;
@@ -24,6 +28,7 @@ import com.pluskynet.domain.Rule;
 import com.pluskynet.domain.Sample;
 import com.pluskynet.domain.User;
 import com.pluskynet.service.SampleService;
+import com.pluskynet.util.JSONUtil;
 
 public class SampleDaoImpl extends HibernateDaoSupport implements SampleDao {
 	private static Logger LOGGER = Logger.getLogger(SampleDaoImpl.class);
@@ -90,8 +95,37 @@ public class SampleDaoImpl extends HibernateDaoSupport implements SampleDao {
 			LOGGER.info("初始新增样本 规则为空 不作处理... sampleid --> "+sample.getId());
 			sample.setState("完成,共0条");
 		}else {
+			if (BatchConstant.LA_ALL.isEmpty() || BatchConstant.LA_ALL.size() < 1) {
+				BatchConstant.initLaallMap();
+			}
+			String reserved = sample.getReserved();
+			JSONArray jsonarr = (JSONArray) JSONArray.parse(reserved);
+			for (int i = 0; i < jsonarr.size(); i++) {
+				JSONObject jsonobj = (JSONObject) jsonarr.get(i);
+				String laids = JSONObject.toJSONString(jsonobj.get("latitudename"));
+				laids = laids.substring(1,laids.length()-1);
+				String[] split = laids.split(",");
+				String latitudename = "";
+				for (String string : split) {
+					latitudename += BatchConstant.LA_ALL.get( Integer.valueOf(string))+",";
+				}
+				latitudename = latitudename.substring(0,latitudename.length()-1);
+				jsonobj.put("latitudename", latitudename);
+				
+				String laides =JSONObject.toJSONString(jsonobj.get("latitudename_except"));
+				laides = laides.substring(1,laides.length()-1);
+				String[] split2 = laides.split(",");
+				String latitudename_ = "";
+				for (String string : split2) {
+					latitudename_ += BatchConstant.LA_ALL.get(Integer.valueOf(string))+",";
+				}
+				latitudename_ = latitudename_.substring(0,latitudename_.length()-1);
+				jsonobj.put("latitudename_except", latitudename_);
+			}
+			sample.setReserved(jsonarr.toJSONString());
 			sample.setState("正在处理");
 		}
+		
 //		String hql = "delete From sample where belongid = " + user.getUserid() + " and type = "+type;
 		Session session = this.getHibernateTemplate().getSessionFactory().getCurrentSession();
 //		session.createSQLQuery(hql).executeUpdate();
