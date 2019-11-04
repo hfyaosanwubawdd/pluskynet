@@ -95,6 +95,7 @@ public class SampleAction extends BaseAction{
 			return;
 		}
 		LOGGER.info(" 民事维度样本saveorupdate ---  用户名---"+user.getUsername()+"---样本id---"+sample.getId());
+		LOGGER.info(sample.toString());
 		if (sample.getId() != null && sampleBatch.getStateByid(sample.getId())) {
 			outJsonByMsg("正在处理该样本,请稍等...");
 			return;
