@@ -26,15 +26,15 @@ public class ImportDemo {
 		Connection conn = C3P0connsPollUTIL.getConnection();
 		Statement stmt = conn.createStatement();
 		String sql = "insert into reason_supply(reason) values";
-		File file = new File("E:\\123456789\\2.xls");
+		File file = new File("E:\\我的资源 目录.xls");
         if(file != null){
             FileInputStream fileInputStream = new FileInputStream(file);
             Workbook workbook = new HSSFWorkbook(fileInputStream);
-            Sheet sheet = workbook.getSheetAt(0);
+            Sheet sheet = workbook.getSheetAt(1);
             if(sheet.getPhysicalNumberOfRows() > 2){
                 for(int k = 1; k < sheet.getPhysicalNumberOfRows(); k++){
                     Row row = sheet.getRow(k);
-                    Cell cell0 = row.getCell(0);
+                    Cell cell0 = row.getCell(2);
                     System.out.println(cell0.toString());
                     sql += "('"+cell0.toString()+"'),";
                 }
