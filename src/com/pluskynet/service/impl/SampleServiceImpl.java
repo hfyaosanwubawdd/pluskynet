@@ -1,6 +1,8 @@
 package com.pluskynet.service.impl;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.pluskynet.batch.thread.SamplesThread;
 import com.pluskynet.dao.CauseDao;
 import com.pluskynet.dao.DocSectionAndRuleDao;
 import com.pluskynet.dao.SampleDao;
@@ -11,6 +13,7 @@ import com.pluskynet.domain.Sample;
 import com.pluskynet.domain.User;
 import com.pluskynet.service.SampleService;
 import com.pluskynet.util.JDBCPoolUtil;
+import com.pluskynet.util.ThreadPoolSingleton;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -91,15 +94,10 @@ public class SampleServiceImpl implements SampleService{
 
 	@Override
 	public void deleteSample(Sample sample) {
-		JDBCPoolUtil.executeSql("delete from sample where id = "+sample.getId());
-		String sql = "delete from sample_rand_la where sample_id = "+sample.getId();
-		Thread t = new Thread() {
-			@Override
-			public void run() {
-				JDBCPoolUtil.executeSql(sql);
-			}
-		};
-		t.start();
+		//作为被观察者 处理自己的业务
+		deleBySampleid(sample.getId());
+		//异步通知观察者们各自处理自己的业务
+		ThreadPoolSingleton.getinstance().executeThread(new SamplesThread(sample.getId()));;
 	}
 	
 	/**
@@ -107,5 +105,11 @@ public class SampleServiceImpl implements SampleService{
 	 */
 	public void randomNew(Sample sample,User user,int type) {
 		sampleDao.saverule(sample,user,type);
+	}
+
+
+	@Override
+	public void deleBySampleid(Integer sampleid) {
+		JDBCPoolUtil.executeSql("delete from sample where id = "+sampleid);
 	}
 }
