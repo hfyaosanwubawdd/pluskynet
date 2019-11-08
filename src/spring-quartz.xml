@@ -33,7 +33,7 @@
         </property>
     </bean>
     
-     <!-- 定时任务配置 2-->
+     <!-- 定时任务配置 2  检测规则 处理数据-->
         <bean name="SMSScheduler_2" class="com.pluskynet.quartz.SectionQuartz"/>
         <bean id="SMSSDetail_2" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject">
@@ -51,4 +51,22 @@
             <value>0 0 20 * * ?</value>
         </property>
     </bean> 
+     <!-- 定时任务配置 3  备份10张mysql.tables-->
+	<bean name="SMSScheduler_3" class="com.pluskynet.quartz.DBTablesCopyQuartz" />
+	<bean id="SMSSDetail_3" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="dBTablesCopyQuartz" />
+		</property>
+		<property name="targetMethod">
+			<value>executeQuartzTask</value>
+		</property>
+	</bean>
+	<bean id="cronTrigger_3" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<ref bean="SMSSDetail_3" />
+		</property>
+		<property name="cronExpression">
+			<value>0 0 13 * * ?</value>
+		</property>
+	</bean> 
  </beans>

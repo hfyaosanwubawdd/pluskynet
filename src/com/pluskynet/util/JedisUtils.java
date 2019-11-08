@@ -26,13 +26,15 @@ public class JedisUtils {
 	/**
 	 * 链接url
 	 */
+//	private static String ADDR = "114.67.105.222";
+//	private static String AUTH = "Hefei19881002";
 	private static String ADDR = "192.168.1.147";
+	private static String AUTH = "Hefei19881002";
 
     private static int PORT = 6379;
 	/**
 	 * 密码
 	 */
-    private static String AUTH = null;
 
     private static int MAX_ACTIVE = 300;
     private static int MAX_IDLE = 200;

@@ -109,23 +109,8 @@ public class JDBCPoolUtil {
 	}
 	
 	
-//	public static void main(String[] args) {
-//		List< Object> list = new ArrayList<Object>();
-//		for (int i = 0; i < 10; i++) {
-//			Map<String, Object> treeMap = new HashMap<String, Object>();
-//			treeMap.put("latitudeid", i);
-//			treeMap.put("latitudefid", i);
-//			treeMap.put("latitudename", "收到丰富的");
-//			treeMap.put("children",new Viewhis());
-//			list.add(treeMap);
-//		}
-//		String jsonString = JSONUtil.toJSONString(list);
-//		JedisUtils.set("test_listStr", jsonString, 0);
-//		String string = JedisUtils.get("test_listStr");
-//		JSONArray parseArray = JSONArray.parseArray(string);
-//		for (Object object : parseArray) {
-//			System.out.println(object.toString());
-//		}
-//	}
+	public static void main(String[] args) {
+		executeSql("delete from sample where id = 999");
+	}
 	
 }

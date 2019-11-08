@@ -327,6 +327,7 @@
 	<!-- quartz相关 -->
 	<bean id="dataUpdateQuartz" class="com.pluskynet.quartz.DataUpdateQuartz"></bean>
 	<bean id="sectionQuartz" class="com.pluskynet.quartz.SectionQuartz"></bean>
+	<bean id="dBTablesCopyQuartz" class="com.pluskynet.quartz.DBTablesCopyQuartz"></bean>
 	<import resource="classpath:spring-quartz.xml"/>
 	
 	<!--  cache  -->
