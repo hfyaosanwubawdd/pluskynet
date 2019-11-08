@@ -91,7 +91,7 @@ public class PreviewAction extends BaseAction{
 				public void run() {
 					ViewhisBatch viewhis = new ViewhisBatch();
 					List<StatsDoc> list = previewService.getDocListNew(preview, user, checkId,0,sampleid,viewhis.countByBatchno(sampleid, ""),batch_no);
-					viewhis.saveViewhis(list,preview,false,batch_no);
+					viewhis.saveViewhis(list,preview,false,batch_no,sampleid);
 				}
 			});
 			threadPool.shutdown();
@@ -125,7 +125,7 @@ public class PreviewAction extends BaseAction{
 					ViewhisBatch viewhis = new ViewhisBatch();
 					Long count = viewhis.countByBatchno(sampleid, "");
 					List<StatsDoc> list = previewService.getDocListNew(preview, user, checkId,1,sampleid,count,batch_no);
-					viewhis.saveViewhis(list,preview,false,batch_no);
+					viewhis.saveViewhis(list,preview,false,batch_no,sampleid);
 				}
 			});
 			threadPool.shutdown();

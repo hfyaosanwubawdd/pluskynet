@@ -1,5 +1,6 @@
 package com.pluskynet.action;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -336,7 +337,7 @@ public class LatitudeAction extends BaseAction {
 			public void run() {
 				SectionBatchPenal sectionBatchPenal = new SectionBatchPenal();
 				List<StatsDoc> list = latitudeService.getDocList(latitude, user,1,sectionBatchPenal.getDocsectionanruleList(user.getUserid(),2,sampleid),batch_no);
-				viewhis.saveViewhis(list,latitude,true,batch_no);
+				viewhis.saveViewhis(list,latitude,true,batch_no,sampleid);
 			}
 		});
 		threadPool.shutdown();
@@ -365,7 +366,7 @@ public class LatitudeAction extends BaseAction {
 			public void run() {
 				SectionBatchPenal sectionBatchPenal = new SectionBatchPenal();
 				List<StatsDoc> list = latitudeService.getDocList(latitude, user,1,sectionBatchPenal.getDocsectionanruleList(user.getUserid(),3,sampleid),batch_no);
-				viewhis.saveViewhis(list,latitude,true,batch_no);
+				viewhis.saveViewhis(list,latitude,true,batch_no,sampleid);
 			}
 		});
 //		threadPool.shutdown();
@@ -498,6 +499,4 @@ public class LatitudeAction extends BaseAction {
 		viewhis.deleteHisByBatchno(batchno);
 		outJsonByMsg("成功");
 	}
-	
-	
 }

@@ -7,6 +7,7 @@ import com.pluskynet.domain.Synonymwordtable;
 import com.pluskynet.domain.User;
 import com.pluskynet.service.SynonymService;
 import com.pluskynet.util.BaseAction;
+import com.pluskynet.util.JedisUtils;
 
 @SuppressWarnings("all")
 public class SynonymAction extends BaseAction {
@@ -63,5 +64,10 @@ public class SynonymAction extends BaseAction {
 		}
 		String msg = synonymService.save(synonymtypetable);
 		outJsonByMsg(msg);
+	}
+	
+	public static void main(String[] args) {
+		JedisUtils.set("hefei", "hefei", 11111);
+		System.out.println(JedisUtils.get("hefei"));
 	}
 }

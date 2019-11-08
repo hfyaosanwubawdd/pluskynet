@@ -89,50 +89,60 @@ public class SampleDaoImpl extends HibernateDaoSupport implements SampleDao {
 	@Override
 	@Transactional
 	public void saverule(Sample sample, User user,int type) {
-		LOGGER.info(user.getUsername()+" 保存样本随机抽取条件");
-		String rule = sample.getRule();
-		if (StringUtil.isBlank(rule) || "[]".equals(rule)) {
-			LOGGER.info("初始新增样本 规则为空 不作处理... sampleid --> "+sample.getId());
-			sample.setState("完成,共0条");
-		}else {
-			if (BatchConstant.LA_ALL.isEmpty() || BatchConstant.LA_ALL.size() < 1) {
-				BatchConstant.initLaallMap();
-			}
-			String reserved = sample.getReserved();
-			JSONArray jsonarr = (JSONArray) JSONArray.parse(reserved);
-			for (int i = 0; i < jsonarr.size(); i++) {
-				JSONObject jsonobj = (JSONObject) jsonarr.get(i);
-				String laids = JSONObject.toJSONString(jsonobj.get("latitudename"));
-				laids = laids.substring(1,laids.length()-1);
-				String[] split = laids.split(",");
-				String latitudename = "";
-				for (String string : split) {
-					latitudename += BatchConstant.LA_ALL.get( Integer.valueOf(string))+",";
+		try {
+			LOGGER.info(user.getUsername()+" 保存样本随机抽取条件");
+			String rule = sample.getRule();
+			if (StringUtil.isBlank(rule) || "[]".equals(rule)) {
+				LOGGER.info("初始新增样本 规则为空 不作处理... sampleid --> "+sample.getId());
+				sample.setState("完成,共0条");
+			}else {
+				if (BatchConstant.LA_ALL.isEmpty() || BatchConstant.LA_ALL.size() < 1) {
+					BatchConstant.initLaallMap();
 				}
-				latitudename = latitudename.substring(0,latitudename.length()-1);
-				jsonobj.put("latitudename", latitudename);
-				
-				String laides =JSONObject.toJSONString(jsonobj.get("latitudename_except"));
-				laides = laides.substring(1,laides.length()-1);
-				String[] split2 = laides.split(",");
-				String latitudename_ = "";
-				for (String string : split2) {
-					latitudename_ += BatchConstant.LA_ALL.get(Integer.valueOf(string))+",";
+				String reserved = sample.getReserved();
+				JSONArray jsonarr = (JSONArray) JSONArray.parse(reserved);
+				for (int i = 0; i < jsonarr.size(); i++) {
+					JSONObject jsonobj = (JSONObject) jsonarr.get(i);
+					String laids = JSONObject.toJSONString(jsonobj.get("latitudename"));
+					LOGGER.info(laids);
+					if (null != laids && !"[]".equals(laids) && !"null".equals(laids)) {
+						laids = laids.substring(1,laids.length()-1);
+						String[] split = laids.split(",");
+						String latitudename = "";
+						for (String string : split) {
+							latitudename += BatchConstant.LA_ALL.get( Integer.valueOf(string))+",";
+						}
+						latitudename = latitudename.substring(0,latitudename.length()-1);
+						jsonobj.put("latitudename", latitudename);
+					}
+
+					String laides =JSONObject.toJSONString(jsonobj.get("latitudename_except"));
+					if (null != laides && !"[]".equals(laides) && !"null".equals(laides)) {
+						laides = laides.substring(1,laides.length()-1);
+						String[] split2 = laides.split(",");
+						String latitudename_ = "";
+						for (String string : split2) {
+							latitudename_ += BatchConstant.LA_ALL.get(Integer.valueOf(string))+",";
+						}
+						latitudename_ = latitudename_.substring(0,latitudename_.length()-1);
+						jsonobj.put("latitudename_except", latitudename_);
+					}
 				}
-				latitudename_ = latitudename_.substring(0,latitudename_.length()-1);
-				jsonobj.put("latitudename_except", latitudename_);
+				sample.setReserved(jsonarr.toJSONString());
+				sample.setState("正在处理");
 			}
-			sample.setReserved(jsonarr.toJSONString());
-			sample.setState("正在处理");
+			LOGGER.info(sample.toString());
+//			String hql = "delete From sample where belongid = " + user.getUserid() + " and type = "+type;
+			Session session = this.getHibernateTemplate().getSessionFactory().getCurrentSession();
+//			session.createSQLQuery(hql).executeUpdate();
+			sample.setBelongid(user.getUserid());
+			sample.setType(type);
+			sample.setBelonguser(user.getUsername());
+			this.getHibernateTemplate().saveOrUpdate(sample);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		
-//		String hql = "delete From sample where belongid = " + user.getUserid() + " and type = "+type;
-		Session session = this.getHibernateTemplate().getSessionFactory().getCurrentSession();
-//		session.createSQLQuery(hql).executeUpdate();
-		sample.setBelongid(user.getUserid());
-		sample.setType(type);
-		sample.setBelonguser(user.getUsername());
-		this.getHibernateTemplate().saveOrUpdate(sample);;
+
 	}
 	
 	@Override
@@ -196,7 +206,5 @@ public class SampleDaoImpl extends HibernateDaoSupport implements SampleDao {
 			docsectionandrule.setBelonguser(user.getUsername());
 			this.getHibernateTemplate().save(docsectionandrule);
 		}
-
 	}
-
 }

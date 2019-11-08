@@ -52,6 +52,7 @@ public class SampleAction extends BaseAction{
 			outJsonByMsg("正在处理该样本,请稍等...");
 			return;
 		}
+		LOGGER.info(sample.toString());
 		sampleService.randomNew(sample, user,11);//11民事段落12刑事段落 21民事维度 22刑事维度
 		String rule = sample.getRule();
 		LOGGER.info(sample.getId());
@@ -188,6 +189,9 @@ public class SampleAction extends BaseAction{
 	
 	/**
 	 * 删除
+	 * TODO: 删除样本时不仅需要删除sample表数据  还要同时删除相对应的样本随机抽取保存表sample_rand sample_rand_la 
+	 *										  与当前样本相关的预览历史记录t_view_his 
+	 *										  样本预览详细信息t_view_doc 表相关信息      (预计使用观察者模式进行级联删除操作)
 	 */
 	public void deleteSample(){
 		User user = isLogined();

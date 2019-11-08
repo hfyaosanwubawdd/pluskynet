@@ -78,7 +78,7 @@ public class ViewhisBatch {
 		return vie;
 	}
 	
-	public void saveViewhis(List<StatsDoc> list, PreParent preParent,boolean isla,String batch_no) {
+	public void saveViewhis(List<StatsDoc> list, PreParent preParent,boolean isla,String batch_no,Integer sampleid) {
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet executequery = null;
@@ -100,10 +100,10 @@ public class ViewhisBatch {
 			conn = C3P0connsPollUTIL.getConnection();
 			conn.setAutoCommit(false);
 			stmt = conn.createStatement();
-			String sql = "insert into t_view_doc(batchno,docid,title,stats,num,doc) values ";
+			String sql = "insert into t_view_doc(batchno,docid,title,stats,num,doc,sampleid) values ";
 			for (StatsDoc statsDoc : list) {
 				sql += "('"+batch_no+"','"+statsDoc.getDocidAndDoc().getDocid()+"','"+statsDoc.getDocidAndDoc().getTitle()+
-						"','"+statsDoc.getStats()+"',"+statsDoc.getNum()+",'"+statsDoc.getDocidAndDoc().getDoc()+"'),";
+						"','"+statsDoc.getStats()+"',"+statsDoc.getNum()+",'"+statsDoc.getDocidAndDoc().getDoc()+"',"+sampleid+"),";
 			}
 			sql = sql.substring(0,sql.length()-1);
 			stmt.addBatch(sql);
