@@ -295,7 +295,6 @@ public class LatitudeDocKey {
 					});
 				}
 				conn.commit();
-				t.shutdown();
 				countDownLatch.await();
 			}
 		} catch (Exception e) {

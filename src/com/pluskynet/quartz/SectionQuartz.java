@@ -12,7 +12,7 @@ import com.pluskynet.util.ThreadPoolSingleton;
 /**
 * @author HF
 * @version 创建时间：2019年11月1日 上午9:49:18
-* 类说明
+* 类说明		定时分段
 */
 public class SectionQuartz {
 

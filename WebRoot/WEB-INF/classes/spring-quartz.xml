@@ -10,10 +10,10 @@
             <list>
                 <ref bean="cronTrigger_1" />
                 <ref bean="cronTrigger_2" />
+                <ref bean="cronTrigger_3" />
             </list>
         </property>
     </bean>
- 
     <!-- 定时任务配置 1-->
    <bean name="SMSScheduler" class="com.pluskynet.quartz.DataUpdateQuartz"/>
     <bean id="SMSSDetail_1" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
