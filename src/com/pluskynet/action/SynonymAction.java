@@ -65,9 +65,4 @@ public class SynonymAction extends BaseAction {
 		String msg = synonymService.save(synonymtypetable);
 		outJsonByMsg(msg);
 	}
-	
-	public static void main(String[] args) {
-		JedisUtils.set("hefei", "hefei", 11111);
-		System.out.println(JedisUtils.get("hefei"));
-	}
 }

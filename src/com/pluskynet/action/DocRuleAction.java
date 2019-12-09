@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.apache.jasper.tagplugins.jstl.core.If;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.pluskynet.batch.ArticleInfo;
 import com.pluskynet.batch.BatchConstant;
 import com.pluskynet.batch.CivilJudgmentThread;
@@ -30,10 +32,12 @@ import com.pluskynet.domain.User;
 import com.pluskynet.domain.Viewhis;
 import com.pluskynet.otherdomain.TreeDocrule;
 import com.pluskynet.service.DocRuleService;
+import com.pluskynet.service.MailService;
 import com.pluskynet.service.PreviewService;
 import com.pluskynet.test.Bigdatatest;
 import com.pluskynet.util.BaseAction;
 import com.pluskynet.util.ThreadPoolSingleton;
+import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
 
 import javassist.expr.NewArray;
 import net.sf.json.JSONObject;
@@ -390,9 +394,7 @@ public class DocRuleAction extends BaseAction {
 	/*
 	 * 增量跑批开始
 	 */
-	public void newDocrun() {
-	}
+
 	public void newDocrun1() {
-		LatitudeDocKey.addKeyCountDownLath();
 	}
 }
