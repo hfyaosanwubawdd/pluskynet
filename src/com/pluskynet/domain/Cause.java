@@ -80,4 +80,10 @@ public class Cause implements java.io.Serializable {
 		this.type = type;
 	}
 
+	@Override
+	public String toString() {
+		return "Cause [id=" + id + ", fid=" + fid + ", causename=" + causename + ", causetable=" + causetable
+				+ ", doctable=" + doctable + ", type=" + type + "]";
+	}
+	
 }

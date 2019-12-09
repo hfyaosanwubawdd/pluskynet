@@ -116,6 +116,4 @@ public class BatchUtils {
 		index = index.substring(1,index.length()-1);
 		return index;
 	}
-	public static void main(String[] args) {
-	}
 }

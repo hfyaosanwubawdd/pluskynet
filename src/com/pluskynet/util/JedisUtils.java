@@ -65,7 +65,21 @@ public class JedisUtils {
 		}
 		return value;
 	}
-	
+	public static String get(String key) {
+		String value = null;
+		Jedis jedis = null;
+		try {
+			jedis = getResource();
+			if (jedis.exists(key)) {
+				value = jedis.get(key);
+			}
+		} catch (Exception e) {
+			logger.info("getObject{} "+ key+"=" + value);
+		} finally {
+			returnResource(jedis);
+		}
+		return value;
+	}
 	public static String setObject(String key, Object value, int cacheSeconds) {
 		String result = null;
 		Jedis jedis = null;
@@ -325,13 +339,46 @@ public class JedisUtils {
 		try {
 			jedis = getResource();
 			result = jedis.exists(getBytesKey(key));
-			logger.debug("existsObject {}", key);
 		} catch (Exception e) {
 			logger.warn("existsObject {}", key, e);
 		} finally {
 			returnResource(jedis);
 		}
 		return result;
+	}
+	
+	
+	public static boolean setRedisLockNX(String key,String value,Integer cacheSeconds) {
+		Jedis jedis = null;
+		try {
+			jedis = getResource();
+			if (jedis.set(key,value, "NX", "EX", cacheSeconds) == null) {
+				return false;
+			}else {
+				return true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.info("setRedisLockNX {}", key, e);
+		} finally {
+			returnResource(jedis);
+		}
+		return false;
+	}
+	
+	public static Long incrCount(String key) {
+		Jedis jedis = null;
+		Long incr = -1L;
+		try {
+			jedis = getResource();
+			incr = jedis.incr(getBytesKey(key));
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.info("setRedisLockNX {}", key, e);
+		} finally {
+			returnResource(jedis);
+		}
+		return incr;
 	}
 /*===================================================================================================================================*/
 	public static Jedis getResource() throws JedisException {
@@ -417,18 +464,16 @@ public class JedisUtils {
 		return null;
 	}
 
-	public static Object expire(byte[] serialize, int i, int dbindex) {
+	public static void expire(String key, Integer cacheSeconds) {
 		Jedis jedis = null;
 		try {
 			jedis = getResource();
-			jedis.select(dbindex);
-			return jedis.expire(serialize,0);
+			jedis.expire(getBytesKey(key), cacheSeconds);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			returnResource(jedis);
 		}
-		return null;
 	}
 
 	public static void flushDB(int dbindex) {

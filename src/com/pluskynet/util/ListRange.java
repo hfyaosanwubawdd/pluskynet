@@ -2,6 +2,10 @@ package com.pluskynet.util;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.log4j.Logger;
+
+import com.pluskynet.batch.BatchConstant;
 /**
  * 为返回结果生成JSON格式提供的工具类
  * @author Administrator
@@ -82,6 +86,4 @@ public class ListRange<T> {
 	public void setTotalPage(long totalPage) {
 		this.totalPage = totalPage;
 	}
-
-
 }

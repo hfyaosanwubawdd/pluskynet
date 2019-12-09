@@ -130,6 +130,7 @@
 	</bean>
 	<bean id="LoginAction" class="com.pluskynet.action.LoginAction">
 		<property name="loginService" ref="loginService" />
+		<property name="mailService" ref="mailService" />
 	</bean>
 	<bean id="latitudeDocAction" class="com.pluskynet.action.LatitudeAction">
 
@@ -330,6 +331,18 @@
 	<bean id="dBTablesCopyQuartz" class="com.pluskynet.quartz.DBTablesCopyQuartz"></bean>
 	<import resource="classpath:spring-quartz.xml"/>
 	
-	<!--  cache  -->
- 
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="smtp.ym.163.com"/>
+        <property name="defaultEncoding" value="UTF-8"/>
+        <property name="username" value="hefei@pluskynet.com"/>
+        <property name="password" value="Hefei19881002"/>
+        <property name="javaMailProperties">
+            <value>
+                mail.smtp.auth=true
+            </value>
+        </property>
+    </bean>
+	<bean id="mailService" class="com.pluskynet.service.impl.MailServiceImpl">
+		 <property name="javaMailSender" ref="mailSender"/>
+	</bean>
 </beans>

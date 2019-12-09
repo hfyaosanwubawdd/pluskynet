@@ -1,6 +1,7 @@
 package com.pluskynet.util;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -34,7 +35,7 @@ public class JDBCPoolUtil {
 		Connection conn = null;
 		Statement stmt = null;
 		try {
-			conn = C3P0connsPollUTIL.getConnection();
+			conn = DriverManager.getConnection("jdbc:mysql://192.168.1.222:3306/wenshu?useUnicode=true&characterEncoding=UTF-8&useSSL=true", "wenshu", "1qaz@WSXYLT");
 			conn.setAutoCommit(false);
 			stmt = conn.createStatement();
 			stmt.execute(sql);
@@ -42,7 +43,7 @@ public class JDBCPoolUtil {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			C3P0connsPollUTIL.close(null, stmt, null);
+			C3P0connsPollUTIL.close(conn, stmt, null);
 		}
 	}
 
@@ -53,7 +54,7 @@ public class JDBCPoolUtil {
 		Statement stmt = null;
 		ResultSet rs = null;
 		try {
-			conn = C3P0connsPollUTIL.getConnection();
+			conn = DriverManager.getConnection("jdbc:mysql://192.168.1.222:3306/wenshu?useUnicode=true&characterEncoding=UTF-8&useSSL=true", "wenshu", "1qaz@WSXYLT");
 			conn.setAutoCommit(false);
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
@@ -72,7 +73,7 @@ public class JDBCPoolUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			C3P0connsPollUTIL.close(null, stmt, rs);
+			C3P0connsPollUTIL.close(conn, stmt, rs);
 		}
 		return list;
 	}
@@ -84,7 +85,7 @@ public class JDBCPoolUtil {
 		Statement stmt = null;
 		ResultSet rs = null;
 		try {
-			conn = C3P0connsPollUTIL.getConnection();
+			conn = DriverManager.getConnection("jdbc:mysql://192.168.1.222:3306/wenshu?useUnicode=true&characterEncoding=UTF-8&useSSL=true", "wenshu", "1qaz@WSXYLT");
 			conn.setAutoCommit(false);
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
@@ -103,7 +104,7 @@ public class JDBCPoolUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			C3P0connsPollUTIL.close(null, stmt, rs);
+			C3P0connsPollUTIL.close(conn, stmt, rs);
 		}
 		return list;
 	}

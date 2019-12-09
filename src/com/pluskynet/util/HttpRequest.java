@@ -77,7 +77,7 @@ public class HttpRequest {
 	 *            请求参数，请求参数应该是 name1=value1&name2=value2 的形式。
 	 * @return 所代表远程资源的响应结果
 	 */
-	public String sendPost(String url, String param) {
+	public static String sendPost(String url, String param) {
 		if (url.contains("114.242.17.135")) {
 			return null;
 		}
@@ -127,5 +127,19 @@ public class HttpRequest {
 			}
 		}
 		return result;
+	}
+	
+	
+	public static void main(String[] args) {
+		for (int i = 0; i <100; i++) {
+			ThreadPoolSingleton.getinstance().executeThread(new Runnable() {
+				@Override
+				public void run() {
+					for (int i = 0; i < 100; i++) {
+						System.out.println(sendPost("http://192.168.1.147/pluskynet/LoginAction!login.action", "username=hefei&password=hefei"));
+					}
+				}
+			});
+		}
 	}
 }

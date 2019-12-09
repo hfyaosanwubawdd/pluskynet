@@ -1,11 +1,13 @@
 package com.pluskynet.batch;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.Set;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -38,11 +40,14 @@ public class BatchConstant {
 	public static final String PWD2 = "1qaz@WSXYLT";
 	public static final String URL2="jdbc:mysql://rm-hp3pks3337r99yu25jo.mysql.huhehaote.rds.aliyuncs.com/pluskynet?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false";
 	public static final String DRIVER2 ="com.mysql.jdbc.Driver";
-
-
+	public static volatile Integer THREAD_STATE = 0;
+	public static volatile ConcurrentHashMap<String, Integer> BATCH_STATE = new ConcurrentHashMap<String, Integer>();
 	public static List<Map> LALIST_PENAL = new ArrayList<Map>();
 	public static List<Map> LALIST_CIVIL = new ArrayList<Map>();
-	
+	public static String REDIS_BLACK_IP = "REDIS_BLACK_IP_";
+	public static SimpleDateFormat REDIS_INCR_KEY = new SimpleDateFormat("_yyyy-MM-dd:HH-mm-ss");
+	public static SimpleDateFormat REDIS_MAIL_KEY = new SimpleDateFormat("yyyy-MM-dd_");
+	public static SimpleDateFormat REDIS_MAIL_KEY_HF = new SimpleDateFormat("yyyy-MM-dd_HH_");
 	public static Map<Integer,String> LA_ALL = new HashMap<Integer, String>();
 	public static void initLaallMap() {
 		List<Map<String, Object>> list = JDBCPoolUtil.selectBySql("select latitudeid,latitudename from latitude");

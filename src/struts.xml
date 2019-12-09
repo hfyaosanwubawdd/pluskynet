@@ -12,6 +12,20 @@
 	<constant name="struts.ui.theme" value="simple" />
 	<package name="pluskynet" extends="struts-default,json-default"
 		namespace="/">
+		<!-- 配置拦截器 -->
+  		<interceptors>
+			<interceptor name="MyInterceptor3"
+				class="com.pluskynet.interceptors.IpCountInterceptor"></interceptor>
+			<interceptor-stack name="myStack">
+				<interceptor-ref name="MyInterceptor3">
+					<param name="excludeMethods"></param>
+				</interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+        <default-interceptor-ref name="myStack"></default-interceptor-ref>
+        
+        
 		<!-- 段落纬度规则的添加、修改、查询 -->
 		<action name="DocRuleAction" class="com.pluskynet.action.DocRuleAction">
 			<!-- <result name="success" type="json">
