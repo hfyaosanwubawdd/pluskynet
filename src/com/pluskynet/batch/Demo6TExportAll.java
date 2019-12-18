@@ -41,22 +41,12 @@ public class Demo6TExportAll {
 		Statement readerStmt = null;
 		Statement readerStmt2 = null;
 		ResultSet readerRs = null;
-//		Connection wenshuConn = null;
-//		Statement wenshuStmt = null;
-//		Statement wenshuStmt2 = null;
-//		ResultSet wenshuRs = null;
 		int ruleid = 0;
 		try {
 			readerConn = C3P0connsPollUTIL.getConnection();
 			readerConn.setAutoCommit(false);
 			readerStmt = readerConn.createStatement();
 			readerStmt2 = readerConn.createStatement();
-
-//			wenshuConn = JDBCwenshu.getConnection();
-//			wenshuConn.setAutoCommit(false);
-//			wenshuStmt = wenshuConn.createStatement();
-//			wenshuStmt2 = wenshuConn.createStatement();
-
 			readerRs = readerStmt.executeQuery("select * from article_dict");
 			while (readerRs.next()) {
 				dictMap.put(readerRs.getString("dict_name"), readerRs.getLong("id") + "");
@@ -122,6 +112,7 @@ public class Demo6TExportAll {
 					map.put("level", level);
 					map.put("doc_id", doc_id);
 					ResultSet executeQuery3 = readerStmt.executeQuery("select * from docsectionandrule where documentsid = '" + doc_id + "' ORDER BY id DESC");
+					//sec_  段落
 					while (executeQuery3.next()) {
 						ruleid = executeQuery3.getInt("ruleid");
 						map.put("name", executeQuery3.getString("title"));
@@ -131,7 +122,7 @@ public class Demo6TExportAll {
 						map.put("sec_" + ruleid + "_index",executeQuery3.getInt("start_index") + "," + executeQuery3.getInt("end_index"));
 						map.put("sec_index_list",executeQuery3.getString("index_list"));
 					}
-
+					//vec_ 维度
 					ResultSet executeQuery4 = readerStmt.executeQuery("select latitudeid from latitudedoc_key where documentid = '" + doc_id + "' group by latitudeid");
 					while (executeQuery4.next()) {
 						map.put("vec_" + executeQuery4.getInt("latitudeid"), "true");

@@ -48,7 +48,7 @@
             <ref bean="SMSSDetail_2" />
         </property>
         <property name="cronExpression">
-            <value>0 0 20 * * ?</value>
+            <value>0 0 19 * * ?</value>
         </property>
     </bean> 
      <!-- 定时任务配置 3  备份10张mysql.tables-->

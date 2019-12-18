@@ -24,7 +24,7 @@ import com.pluskynet.util.JDBCPoolUtil;
 public class BatchConstant {
 	public static String[] TABLE_NAMES= {"01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20",};
 	public static String[] DATA = {"2003","2004","2005","2006","2007","2008","2010","2011","2012","2013","2014","2015","2016","2017","2018"};
-	public static String[] SPCX = {"一审","二审","再审"};
+	public static String[] SPCX = {"一审","二审","再审","其他","再审审查与审判监督"};
 	public static final String USER="root";
 	public static final String PWD="L3fhExzCz1CpaHbc";
 	public static final String URL="jdbc:mysql://192.168.1.195:3306/wenshu?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false";

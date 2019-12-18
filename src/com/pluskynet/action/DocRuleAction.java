@@ -232,8 +232,8 @@ public class DocRuleAction extends BaseAction {
 				docrule.setSectionname(sectionName);
 			}
 			msg = docRuleService.update(docrule);
-			ThreadPoolSingleton getinstance = ThreadPoolSingleton.getinstance();
-			getinstance.executeThread(new RuleStateThread(docrule));
+//			ThreadPoolSingleton getinstance = ThreadPoolSingleton.getinstance();
+//			getinstance.executeThread(new RuleStateThread(docrule));
 			LOGGER.info("修改名称或规则成功"+user.getUsername());
 		}
 		outJsonByMsg(msg);
